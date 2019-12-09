@@ -4,7 +4,7 @@ pipeline {
     stages {
       stage('checkout') {
           steps {
-                git url: 'git@giturl'
+                git url: 'https://github.com/rishugera203/BCG'
           }
         }
 
