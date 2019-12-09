@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    
+    stages {
+      stage('checkout') {
+          steps {
+                git url: 'git@giturl'
+          }
+        }
+
+  stage('Set Terraform path') {
+            steps {
+                script {
+                    def tfHome = tool name: 'Terraform'
+                    env.PATH = "${tfHome}:${env./usr/bin/terraform}"
+                }
+                sh 'terraform --version'
+            }
+        }
+        
+         stage('Provision infrastructure') {
+             
+            steps {
+                sh 'terraform init'
+                sh 'terraform plan -out=plan'
+                sh 'terraform apply plan'
+            }
+        }
+
+stage('Execution of ansible playbook') 
+	{
+         stage('Run the apache Playbook') 
+		{
+            steps {
+                sh 'ansible-playbook apache.yml --ask-sudo-pass'
+            }
+        }
+    }
+}
+
